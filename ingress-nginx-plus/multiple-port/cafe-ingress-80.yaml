@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cafe-ingress-80
+  annotations:
+    nginx.org/listen-ports: "80"
+spec:
+  rules:
+  - host: cafe.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tea-svc
+          servicePort: 80

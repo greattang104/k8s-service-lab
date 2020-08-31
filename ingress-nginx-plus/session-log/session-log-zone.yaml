@@ -1,0 +1,13 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-config
+  namespace: nginx-ingress
+data:
+  ssl-redirect: "False"
+  http-snippets: |
+    session_log_format main '$session_log_id - $remote_addr - [$time_local] '
+                            '"$request" $status $body_bytes_sent $http_user_agent';
+    session_log_zone /var/log/nginx/session.log format=main zone=one:1m timeout=30s
+                     md5=$binary_remote_addr$http_user_agent;
+

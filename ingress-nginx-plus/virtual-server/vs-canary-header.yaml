@@ -1,0 +1,31 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: cafe-canary-header
+  annotations:
+    kubernetes.io/ingress.class: "nginx-plus"
+spec:
+  host: cafe.example.com
+  upstreams:
+  - name: coffee-v1
+    service: coffee-v1-svc
+    port: 80
+  - name: coffee-v2
+    service: coffee-v2-svc
+    port: 80
+  - name: tea
+    service: tea-svc
+    port: 80
+  routes:
+  - path: /coffee
+    matches:
+    - conditions:
+      - header: X-Canary
+        value: "yes"
+      action:
+        pass: coffee-v2
+    action:
+      pass: coffee-v1
+  - path: /tea
+    action:
+      pass: tea

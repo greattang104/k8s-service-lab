@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cafe-ingress-tea-minion
+  namespace: tea
+  annotations:
+    kubernetes.io/ingress.class: "nginx-plus"
+    nginx.org/mergeable-ingress-type: "minion"
+spec:
+  rules:
+  - host: cafe.example.com
+    http:
+      paths:
+      - path: /tea
+        backend:
+          serviceName: tea-tea-svc
+          servicePort: 80
