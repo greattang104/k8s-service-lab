@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-uri-select
+  annotations:
+    kubernetes.io/ingress.class: "nginx-oss"
+spec:
+  tls:
+    - hosts:
+      - cafe.example.com
+      # This assumes tls-secret exists and the SSL
+      # certificate contains a CN for foo.bar.com
+      secretName: cafe-secret
+  rules:
+    - host: cafe.example.com
+      http:
+        paths:
+        - path: /coffee
+          backend:
+            # This assumes http-svc exists and routes to healthy endpoints
+            serviceName: coffee-svc
+            servicePort: 80
+        - path: /tea
+          backend:
+            # This assumes http-svc exists and routes to healthy endpoints
+            serviceName: tea-svc
+            servicePort: 80
